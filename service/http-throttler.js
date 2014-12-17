@@ -37,6 +37,13 @@
             }
             $log.debug("Response received from server - new count = " + reqCount);
             return response || $q.when(response);
+          },
+          responseError: function(rejection) {
+            if (!httpBuffer.retryOne()) {
+              reqCount--;
+            }
+            $log.debug("Error received from server - new count = " + reqCount);
+            return $q.reject(rejection);
           }
         };
         return service;
